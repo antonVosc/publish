@@ -1,13 +1,13 @@
-import pygame,ctypes, time,random #importing all the libraries needed
+import pygame, time,random #importing all the libraries needed
 pygame.init() #initialising pygame to use it in the project
-user32 = ctypes.windll.user32 #getting my screen dimensions (width and height)
+#user32 = ctypes.windll.user32 #getting my screen dimensions (width and height)
 #window_width=3840
 #window_height = 2160
 green=(0,255,0) #RGB values for green colour
 black=(0,0,0) #RGB values for black colour
 red = (255,0,0)
-window_width=user32.GetSystemMetrics(0) #getting my screen width from line 3
-window_height=user32.GetSystemMetrics(1) #getting my screen height from line 3
+window_width=1440#user32.GetSystemMetrics(0) #getting my screen width from line 3
+window_height=900#user32.GetSystemMetrics(1) #getting my screen height from line 3
 gamedisplay = pygame.display.set_mode((window_width,window_height),pygame.FULLSCREEN)#pygame.FULLSCREEN #show display with the dimensions set
 pygame.display.set_caption('car game') #the name of the poject (appears at the top of the game window as a name of a game)
 car_img = pygame.image.load('car.png') #loading a car image into a project
