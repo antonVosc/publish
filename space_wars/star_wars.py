@@ -81,6 +81,11 @@ class Asteroids(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.x += self.x_speed
 		self.rect.y += self.y_speed
+		if window_width<self.rect.x or self.rect.x<0-self.asteroid_size[0] or window_height<self.rect.y:
+			self.kill()
+			asteroid=Asteroids()
+			#Adding to the group
+			asteroids_gp.add(asteroid)
 
 class Explosions(pygame.sprite.Sprite):
 	def __init__(self,center):
@@ -106,10 +111,13 @@ class Explosions(pygame.sprite.Sprite):
 				self.rect.center = center
 
 
+
 def gameloop():
+	global asteroids_gp
 	my_score = 0
 	game_quit = False
 	clock.tick(FPS)
+
 
 	#Group creation
 	player_gp = pygame.sprite.Group()
@@ -147,7 +155,9 @@ def gameloop():
 			explosion_gp.add(expl)
 			asteroid=Asteroids()
 			asteroids_gp.add(asteroid)
-
+			if (my_score % 5) == 0:
+				asteroids_gp.add(asteroid)
+				
 		death = pygame.sprite.spritecollide(player, asteroids_gp, True)
 		if death:
 			game_quit=True
