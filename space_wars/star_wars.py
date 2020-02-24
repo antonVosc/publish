@@ -157,7 +157,7 @@ def gameloop():
 			asteroids_gp.add(asteroid)
 			if (my_score % 5) == 0:
 				asteroids_gp.add(asteroid)
-				
+
 		death = pygame.sprite.spritecollide(player, asteroids_gp, True)
 		if death:
 			game_quit=True
