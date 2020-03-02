@@ -85,6 +85,7 @@ class Asteroids(pygame.sprite.Sprite):
 			self.kill()
 			asteroid=Asteroids()
 			#Adding to the group
+
 			asteroids_gp.add(asteroid)
 
 class Explosions(pygame.sprite.Sprite):
