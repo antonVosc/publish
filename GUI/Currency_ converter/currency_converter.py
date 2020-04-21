@@ -1,0 +1,133 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
+import requests
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(331, 218)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(50, 150, 201, 31))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setGeometry(QtCore.QRect(50, 110, 201, 31))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.from_currency = QtWidgets.QComboBox(self.centralwidget)
+        self.from_currency.setGeometry(QtCore.QRect(10, 40, 121, 21))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.from_currency.setFont(font)
+        self.from_currency.setObjectName("from_currency")
+        self.from_currency.addItem("")
+        self.from_currency.addItem("")
+        self.from_currency.addItem("")
+        self.from_currency.addItem("")
+        self.from_currency.addItem("")
+        self.From_box = QtWidgets.QTextEdit(self.centralwidget)
+        self.From_box.setGeometry(QtCore.QRect(10, 70, 121, 31))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.From_box.setFont(font)
+        self.From_box.setObjectName("From_box")
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(200, 20, 111, 21))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(10, 10, 81, 31))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.To_box = QtWidgets.QTextEdit(self.centralwidget)
+        self.To_box.setGeometry(QtCore.QRect(200, 70, 121, 31))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.To_box.setFont(font)
+        self.To_box.setObjectName("To_box")
+        self.to_currency = QtWidgets.QComboBox(self.centralwidget)
+        self.to_currency.setGeometry(QtCore.QRect(200, 40, 121, 21))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.to_currency.setFont(font)
+        self.to_currency.setObjectName("to_currency")
+        self.to_currency.addItem("")
+        self.to_currency.addItem("")
+        self.to_currency.addItem("")
+        self.to_currency.addItem("")
+        self.to_currency.addItem("")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 331, 18))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.pushButton_2.clicked.connect(self.check)
+        self.pushButton.clicked.connect(self.clear)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.pushButton.setText(_translate("MainWindow", "Clear"))
+        self.pushButton_2.setText(_translate("MainWindow", "Convert"))
+        self.from_currency.setItemText(0, _translate("MainWindow", "USD"))
+        self.from_currency.setItemText(1, _translate("MainWindow", "GBP"))
+        self.from_currency.setItemText(2, _translate("MainWindow", "RUB"))
+        self.from_currency.setItemText(3, _translate("MainWindow", "EUR"))
+        self.from_currency.setItemText(4, _translate("MainWindow", "CHF"))
+        self.label_2.setText(_translate("MainWindow", "To"))
+        self.label.setText(_translate("MainWindow", "From"))
+        self.to_currency.setItemText(0, _translate("MainWindow", "USD"))
+        self.to_currency.setItemText(1, _translate("MainWindow", "GBP"))
+        self.to_currency.setItemText(2, _translate("MainWindow", "RUB"))
+        self.to_currency.setItemText(3, _translate("MainWindow", "EUR"))
+        self.to_currency.setItemText(4, _translate("MainWindow", "CHF"))
+
+    def check(self):
+        from_cur = self.from_currency.currentText()
+        to_cur = self.to_currency.currentText()
+        start_num = self.From_box.toPlainText()
+        if start_num=='':
+            error = QMessageBox()
+            error.setWindowTitle('Error Occured')
+            error.setText('The boxes are empty!')
+            error.exec_()
+        else:
+            new_num = self.convert(from_cur,to_cur)
+            new_value = int(start_num)*new_num
+            self.To_box.setText(str(new_value))
+
+    def convert(self, fr, to):
+        url = 'https://prime.exchangerate-api.com/v5/3c26ef980adb0b2bf1642077/latest/'+fr
+        response = requests.get(url)
+        data = response.json()
+        return data['conversion_rates'][to]
+
+    def clear(self):
+        self.From_box.setText('')
+        self.To_box.setText('')
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
