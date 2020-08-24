@@ -56,6 +56,9 @@ def gameloop():
 				if event.key==pygame.K_ESCAPE:
 					pygame.quit()
 					quit()
+				if event.key==pygame.K_SPACE:
+					ball.rect.y -= 10
+		ball.rect.y += 1
 
 		player_gp.update()
 		enemy_gp.update()
