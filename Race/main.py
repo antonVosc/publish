@@ -13,7 +13,7 @@ pygame.display.set_caption('Car Race')
 white = (255,255,255)
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self):
+	def __init__(self,lives):
 		pygame.sprite.Sprite.__init__(self)
 		self.image=pygame.image.load('images/car.png') #loading an emeny car image into a project
 		self.size = self.image.get_rect().size
@@ -21,29 +21,36 @@ class Player(pygame.sprite.Sprite):
 		self.size = self.image.get_rect().size
 		self.rect = self.image.get_rect()
 		self.rect.y = window_height-self.size[1]
-		self.lives = 3
+		self.lives = lives
 		self.score = 0
 
 	def update(self):
 		self.rect.x = pygame.mouse.get_pos()[0]
 
 class Obsticles(pygame.sprite.Sprite):
-	def __init__(self):
+	def __init__(self,speed,prob2):
 		pygame.sprite.Sprite.__init__(self)
-		self.obst = ['images/cone.png','images/road-closed.png']
-		self.image = pygame.image.load('{}'.format(random.choice(self.obst)))
+		self.obst = ['images/cone.png','images/road-closed.png','images/lives.png']
+		self.obj = random.choice(self.obst)
+		self.image = pygame.image.load('{}'.format(self.obj))
 		self.size = self.image.get_rect().size
 		self.image = pygame.transform.scale(self.image,(int(self.size[0]/3),int(self.size[1]/3)))
 		self.size = self.image.get_rect().size
 		self.rect = self.image.get_rect()
 		self.rect.x = random.randint(0,window_width-self.size[0])
 		self.rect.y = self.size[1] * -1
+		self.speed = speed
+		self.prob = prob2
 
 	def update(self):
-		self.rect.y += 5
+		self.rect.y += self.speed
 		if self.rect.y > window_height:
 			player.score += 1
 			self.kill()
+		if self.prob <=20:
+			self.obj = 'images/road-closed.png'
+		else:
+			self.obj = 'images/cone.png'
 
 
 def drawtext(text, x, y, color, size):
@@ -61,17 +68,17 @@ def menu():
 	drawtext('Exit', ((window_width/8)*6)+85, (window_height/4)+90, (0,0,0), 70)
 
 def gameloop():
-	global obsticles_gp,player
+	global obsticles_gp,player,speed,prob2
 
 	game_quit = False
+	speed = 5
+	lives = 3
 
 	player_gp = pygame.sprite.Group()
-	player = Player()
+	player = Player(lives)
 	player_gp.add(player)
 
 	obsticles_gp = pygame.sprite.Group()
-	obst = Obsticles()
-	obsticles_gp.add(obst)
 
 	but_size = 300
 	start_but_coords = (window_width/8,window_height/4,(window_width/8)+but_size,(window_height/4)+but_size)
@@ -99,30 +106,37 @@ def gameloop():
 			player_gp.update()
 			obsticles_gp.draw(gamedisplay)
 			obsticles_gp.update()
-			drawtext('Lives: '+str(player.lives), 0,0, (0,0,0), 70)
+			drawtext('Lives: '+str(lives), 0,0, (0,0,0), 70)
 			drawtext('Score: '+str(player.score), window_width-350,0, (0,0,0), 70)
 
 		if stats == True:
 			gamedisplay.fill(white)
 
 		prob = random.randint(0,1000)
-		if prob <= 20:
-			obsticle = Obsticles()
-			obsticles_gp.add(obsticle)
+		prob2 = random.randint(0,1000)
+		if prob <= 20: #2%
+			obst = Obsticles(speed,prob2)
+			obsticles_gp.add(obst)
+			object = obst.obj
 
 		collision = pygame.sprite.groupcollide(player_gp,obsticles_gp,False,True)
-		if collision:
-			player.lives -= 1
 
-		if player.lives == 0:
+		if collision and object != 'images/lives.png':
+			lives -= 1
+		elif collision and object == 'images/lives.png':
+			lives += 1
+
+		if lives == 0:
 			pygame.quit()
 			quit()
 
+		speed += 0.05
 		mouse_x, mouse_y = pygame.mouse.get_pos()
 		if ((mouse_x > start_but_coords[0]) and (mouse_x < start_but_coords[2])) and ((mouse_y > start_but_coords[1]) and (mouse_y < start_but_coords[3])):
 			pres = pygame.mouse.get_pressed()
 			if pres[0]==1:
 				display_menu = False
+
 
 
 		if ((mouse_x > ext_btn_coords[0]) and (mouse_x < ext_btn_coords[2])) and ((mouse_y > ext_btn_coords[1]) and (mouse_y < +ext_btn_coords[3])):
