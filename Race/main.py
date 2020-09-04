@@ -9,6 +9,7 @@ window_width=user32.GetSystemMetrics(0)
 window_height=user32.GetSystemMetrics(1)
 gamedisplay = pygame.display.set_mode((window_width,window_height),pygame.FULLSCREEN)
 pygame.display.set_caption('Car Race')
+obsticles = ['images/cone.png','images/road-closed.png','images/lives.png']
 
 white = (255,255,255)
 
@@ -28,11 +29,9 @@ class Player(pygame.sprite.Sprite):
 		self.rect.x = pygame.mouse.get_pos()[0]
 
 class Obsticles(pygame.sprite.Sprite):
-	def __init__(self,speed,prob2):
+	def __init__(self,speed,img):
 		pygame.sprite.Sprite.__init__(self)
-		self.obst = ['images/cone.png','images/road-closed.png','images/lives.png']
-		self.obj = random.choice(self.obst)
-		self.image = pygame.image.load('{}'.format(self.obj))
+		self.image = pygame.image.load('{}'.format(img))
 		self.size = self.image.get_rect().size
 		self.image = pygame.transform.scale(self.image,(int(self.size[0]/3),int(self.size[1]/3)))
 		self.size = self.image.get_rect().size
@@ -40,17 +39,12 @@ class Obsticles(pygame.sprite.Sprite):
 		self.rect.x = random.randint(0,window_width-self.size[0])
 		self.rect.y = self.size[1] * -1
 		self.speed = speed
-		self.prob = prob2
 
 	def update(self):
 		self.rect.y += self.speed
 		if self.rect.y > window_height:
 			player.score += 1
 			self.kill()
-		if self.prob <=20:
-			self.obj = 'images/road-closed.png'
-		else:
-			self.obj = 'images/cone.png'
 
 
 def drawtext(text, x, y, color, size):
@@ -61,14 +55,14 @@ def drawtext(text, x, y, color, size):
 
 def menu():
 	pygame.draw.rect(gamedisplay, (0,255,0), (window_width/8, window_height/4,300,300), 0)
-	pygame.draw.rect(gamedisplay, (0,0,255), ((window_width/2)-150, window_height/4, 300, 300), 0)
+	pygame.draw.rect(gamedisplay, (255,255,0), ((window_width/2)-150, window_height/4, 300, 300), 0)
 	pygame.draw.rect(gamedisplay, (255,0,0), ((window_width/8)*6, window_height/4, 300, 300), 0)
 	drawtext('Play', (window_width/8)+90, (window_height/4)+90, (0,0,0), 70)
 	drawtext('Stats', (window_width/2)-100, (window_height/4)+90, (0,0,0), 70)
 	drawtext('Exit', ((window_width/8)*6)+85, (window_height/4)+90, (0,0,0), 70)
 
 def gameloop():
-	global obsticles_gp,player,speed,prob2
+	global obsticles_gp,player,speed
 
 	game_quit = False
 	speed = 5
@@ -79,6 +73,8 @@ def gameloop():
 	player_gp.add(player)
 
 	obsticles_gp = pygame.sprite.Group()
+
+	live_gp = pygame.sprite.Group()
 
 	but_size = 300
 	start_but_coords = (window_width/8,window_height/4,(window_width/8)+but_size,(window_height/4)+but_size)
@@ -106,6 +102,8 @@ def gameloop():
 			player_gp.update()
 			obsticles_gp.draw(gamedisplay)
 			obsticles_gp.update()
+			live_gp.draw(gamedisplay)
+			live_gp.update()
 			drawtext('Lives: '+str(lives), 0,0, (0,0,0), 70)
 			drawtext('Score: '+str(player.score), window_width-350,0, (0,0,0), 70)
 
@@ -113,24 +111,30 @@ def gameloop():
 			gamedisplay.fill(white)
 
 		prob = random.randint(0,1000)
-		prob2 = random.randint(0,1000)
 		if prob <= 20: #2%
-			obst = Obsticles(speed,prob2)
+			obst = Obsticles(speed,obsticles[0])
 			obsticles_gp.add(obst)
-			object = obst.obj
+			if prob <= 4: #2%
+				obst = Obsticles(speed,obsticles[1])
+				obsticles_gp.add(obst)
+			if prob <= 2:
+				obst = Obsticles(speed,obsticles[2])
+				live_gp.add(obst)
 
 		collision = pygame.sprite.groupcollide(player_gp,obsticles_gp,False,True)
+		collision2 = pygame.sprite.groupcollide(player_gp,live_gp,False,True)
 
-		if collision and object != 'images/lives.png':
+		if collision and prob > 2:
 			lives -= 1
-		elif collision and object == 'images/lives.png':
+
+		if collision2:
 			lives += 1
 
 		if lives == 0:
 			pygame.quit()
 			quit()
 
-		speed += 0.05
+		speed += 0.005
 		mouse_x, mouse_y = pygame.mouse.get_pos()
 		if ((mouse_x > start_but_coords[0]) and (mouse_x < start_but_coords[2])) and ((mouse_y > start_but_coords[1]) and (mouse_y < start_but_coords[3])):
 			pres = pygame.mouse.get_pressed()
