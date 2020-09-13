@@ -1,4 +1,5 @@
-import pygame,ctypes,random
+import pygame,ctypes,random,sys
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 #Init
 pygame.init()
@@ -61,6 +62,14 @@ def menu():
 	drawtext('Stats', (window_width/2)-100, (window_height/4)+90, (0,0,0), 70)
 	drawtext('Exit', ((window_width/8)*6)+85, (window_height/4)+90, (0,0,0), 70)
 
+def get_highest_score():
+	with open('scores.txt', 'r') as f:
+		all_scores = f.read()
+	f.close()
+	if all_scores == "":
+		all_scores =0
+	return all_scores
+
 def gameloop():
 	global obsticles_gp,player,speed
 
@@ -83,6 +92,8 @@ def gameloop():
 	start_game = False
 	display_menu = True
 	stats = False
+	high_score = True
+	score_from_file = get_highest_score()
 
 	while game_quit!=True:
 		clock.tick(FPS)
@@ -109,6 +120,9 @@ def gameloop():
 
 		if stats == True:
 			gamedisplay.fill(white)
+			if high_score == True:
+				high_score = False
+			drawtext('High score: '+score_from_file, (window_width/2)-225,(window_height/2)-100, (0,0,0), 70)
 
 		prob = random.randint(0,1000)
 		if prob <= 20: #2%
@@ -131,6 +145,10 @@ def gameloop():
 			lives += 1
 
 		if lives == 0:
+			if player.score > int(score_from_file):
+				with open('scores.txt', 'w') as f:
+					f.write(str(player.score))
+					f.close()
 			pygame.quit()
 			quit()
 
@@ -153,8 +171,8 @@ def gameloop():
 			pres = pygame.mouse.get_pressed()
 			if pres[0]==1:
 				stats=True
-
 		pygame.display.flip()
+
 
 
 gameloop()
