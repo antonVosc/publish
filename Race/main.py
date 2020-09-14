@@ -89,6 +89,7 @@ def gameloop():
 	start_but_coords = (window_width/8,window_height/4,(window_width/8)+but_size,(window_height/4)+but_size)
 	stats_but_coords = ((window_width/2)-150,window_height/4,((window_width/2)-150)+but_size,(window_height/4)+but_size)
 	ext_btn_coords = ((window_width/8)*6,window_height/4,((window_width/8)*6)+but_size,(window_height/4)+but_size)
+	ext_stats_btn_coors = ((window_width/8)*6.6,(window_height/2)+600,((window_width/8)*6.6)+400,(window_height/2)+700)
 	start_game = False
 	display_menu = True
 	stats = False
@@ -123,6 +124,15 @@ def gameloop():
 			if high_score == True:
 				high_score = False
 			drawtext('High score: '+score_from_file, (window_width/2)-225,(window_height/2)-100, (0,0,0), 70)
+			pygame.draw.rect(gamedisplay, (0,0,255), ((window_width/8)*6.6, (window_height/2)+600, 400, 100), 0)
+			drawtext('Exit', (window_width/8)*7, (window_height/2)+600, (0,0,0), 70)
+			if ((mouse_x > ext_stats_btn_coors[0]) and (mouse_x < ext_stats_btn_coors[2])) and ((mouse_y > ext_stats_btn_coors[1]) and (mouse_y < ext_stats_btn_coors[3])):
+				pres = pygame.mouse.get_pressed()
+				if pres[0]==1:
+					gamedisplay.fill(white)
+					stats = False
+					menu()
+
 
 		prob = random.randint(0,1000)
 		if prob <= 20: #2%
