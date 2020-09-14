@@ -1,4 +1,4 @@
-import pygame,ctypes,random,sys
+import pygame,ctypes,random,time,sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 #Init
@@ -11,13 +11,14 @@ window_height=user32.GetSystemMetrics(1)
 gamedisplay = pygame.display.set_mode((window_width,window_height),pygame.FULLSCREEN)
 pygame.display.set_caption('Car Race')
 obsticles = ['images/cone.png','images/road-closed.png','images/lives.png']
+car_states = ['images/car.png','images/car_crashed.png']
 
 white = (255,255,255)
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self,lives):
 		pygame.sprite.Sprite.__init__(self)
-		self.image=pygame.image.load('images/car.png') #loading an emeny car image into a project
+		self.image=pygame.image.load(car_states[0])
 		self.size = self.image.get_rect().size
 		self.image = pygame.transform.scale(self.image,(int(self.size[0]/3),int(self.size[1]/3)))
 		self.size = self.image.get_rect().size
@@ -25,9 +26,17 @@ class Player(pygame.sprite.Sprite):
 		self.rect.y = window_height-self.size[1]
 		self.lives = lives
 		self.score = 0
+		self.is_crashed = False
 
 	def update(self):
 		self.rect.x = pygame.mouse.get_pos()[0]
+		if self.is_crashed == True:
+			self.image=pygame.image.load(car_states[1])
+			self.image = pygame.transform.scale(self.image,(int(self.size[0]),int(self.size[1])))
+		else:
+			self.image=pygame.image.load(car_states[0])
+			self.image = pygame.transform.scale(self.image,(int(self.size[0]),int(self.size[1])))
+
 
 class Obsticles(pygame.sprite.Sprite):
 	def __init__(self,speed,img):
@@ -86,6 +95,7 @@ def gameloop():
 	live_gp = pygame.sprite.Group()
 
 	but_size = 300
+	milisecs = 0
 	start_but_coords = (window_width/8,window_height/4,(window_width/8)+but_size,(window_height/4)+but_size)
 	stats_but_coords = ((window_width/2)-150,window_height/4,((window_width/2)-150)+but_size,(window_height/4)+but_size)
 	ext_btn_coords = ((window_width/8)*6,window_height/4,((window_width/8)*6)+but_size,(window_height/4)+but_size)
@@ -150,6 +160,13 @@ def gameloop():
 
 		if collision and prob > 2:
 			lives -= 1
+			player.is_crashed = True
+			milisecs = pygame.time.get_ticks()
+
+		now = pygame.time.get_ticks()
+		if player.is_crashed == True:
+			if now > milisecs + 2000:
+				player.is_crashed = False
 
 		if collision2:
 			lives += 1
@@ -159,6 +176,12 @@ def gameloop():
 				with open('scores.txt', 'w') as f:
 					f.write(str(player.score))
 					f.close()
+			gamedisplay.fill(white)
+			drawtext('Game Over!', (window_width/8)*3.5, (window_height/2)-100, (0,0,0), 70)
+			drawtext('Your score is '+str(player.score), (window_width/8)*3.3, (window_height/2)-10, (0,0,0), 70)
+			drawtext('Your highest score is '+score_from_file, ((window_width/8)*3.3)-150, (window_height/2)+80, (0,0,0), 70)
+			pygame.display.flip()
+			time.sleep(2)
 			pygame.quit()
 			quit()
 
