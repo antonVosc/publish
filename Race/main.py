@@ -153,10 +153,12 @@ def gameloop():
 			drawtext('Exit', (window_width/8)*7, (window_height/2)+600, (0,0,0), 70)
 			if ((mouse_x > ext_stats_btn_coords[0]) and (mouse_x < ext_stats_btn_coords[2])) and ((mouse_y > ext_stats_btn_coords[1]) and (mouse_y < ext_stats_btn_coords[3])):
 				pres = pygame.mouse.get_pressed()
+				pygame.draw.rect(gamedisplay, (0,0,255), ((window_width/8)*6, (window_height/2)+550,600,150), 0)
+				drawtext('Exit', ((window_width/8)*6)+150, (window_height/2)+510, (0,0,0),150)
 				if pres[0]==1:
 					gamedisplay.fill(white)
 					stats = False
-					menu()
+					display_menu = True
 
 		prob = random.randint(0,player.max_prob)
 		if prob <= 80 and lives > 0 and display_menu == False: #2%
@@ -206,11 +208,15 @@ def gameloop():
 			for obst in live_gp:
 				obst.kill()
 			if ((mouse_x > exit_after_game_btn_coords[0]) and (mouse_x < exit_after_game_btn_coords[2])) and ((mouse_y > exit_after_game_btn_coords[1]) and (mouse_y < exit_after_game_btn_coords[3])):
+				pygame.draw.rect(gamedisplay, (255,0,0), ((window_width/8)+1000, (window_height/2)+300, 400, 400), 0)
+				drawtext('Exit', ((window_width/8)*5)-275, (window_height/2)+350, (0,0,0), 200)
 				pres = pygame.mouse.get_pressed()
 				if pres[0] == 1:
 					pygame.quit()
 					quit()
 			if ((mouse_x > play_again_btn_coords[0]) and (mouse_x < play_again_btn_coords[2])) and ((mouse_y > play_again_btn_coords[1]) and (mouse_y < play_again_btn_coords[3])):
+				pygame.draw.rect(gamedisplay, (0,0,255), ((window_width/8)+500, (window_height/2)+300, 400, 400), 0)
+				drawtext('Main menu', ((window_width/8)*2)+188, (window_height/2)+440, (0,0,0), 80)
 				pres = pygame.mouse.get_pressed()
 				if pres[0] == 1:
 					gameloop()
@@ -220,22 +226,27 @@ def gameloop():
 
 		if display_menu == True:
 			if ((mouse_x > start_but_coords[0]) and (mouse_x < start_but_coords[2])) and ((mouse_y > start_but_coords[1]) and (mouse_y < start_but_coords[3])):
+				pygame.draw.rect(gamedisplay, (0,255,0), ((window_width/8)-100, (window_height/4)-100,500,500), 0)
+				drawtext('Play', (window_width/8)-30, (window_height/4)-20, (0,0,0),200)
 				pres = pygame.mouse.get_pressed()
 				if pres[0]==1:
 					display_menu = False
 
-
-
 			if ((mouse_x > ext_btn_coords[0]) and (mouse_x < ext_btn_coords[2])) and ((mouse_y > ext_btn_coords[1]) and (mouse_y < +ext_btn_coords[3])):
+				pygame.draw.rect(gamedisplay, (255,0,0), (((window_width/8)*6)-100, (window_height/4)-100, 500, 500), 0)
+				drawtext('Exit', ((window_width/8)*6)-55, (window_height/4)+5, (0,0,0), 200)
 				pres = pygame.mouse.get_pressed()
 				if pres[0] == 1:
 					pygame.quit()
 					quit()
 
 			if ((mouse_x > stats_but_coords[0]) and (mouse_x < stats_but_coords[2])) and ((mouse_y > stats_but_coords[1]) and (mouse_y < stats_but_coords[3])):
+				pygame.draw.rect(gamedisplay, (255,255,0), ((window_width/2)-250, (window_height/4)-100,500,500), 0)
+				drawtext('Stats', (window_width/2)-210, (window_height/4)+30, (0,0,0),150)
 				pres = pygame.mouse.get_pressed()
 				if pres[0]==1:
 					stats=True
+					display_menu = False
 
 		pygame.display.flip()
 
