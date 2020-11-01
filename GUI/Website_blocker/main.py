@@ -35,14 +35,12 @@ class Ui_MainWindow(object):
         self.pushButton_2.setGeometry(QtCore.QRect(370, 180, 61, 191))
         self.pushButton_2.setObjectName("pushButton_2")
         MainWindow.setCentralWidget(self.centralwidget)
-
         self.website_list = self.blocked_websites()
-
         self.pushButton.clicked.connect(self.block_website)
         self.pushButton_2.clicked.connect(self.unblock_website)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -55,6 +53,7 @@ class Ui_MainWindow(object):
         self.listWidget.setSortingEnabled(False)
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.pushButton_2.setText(_translate("MainWindow", "Unblock"))
+
 
     def block_website(self):
         exist = False
@@ -79,9 +78,10 @@ class Ui_MainWindow(object):
                     hosts.write('127.0.0.1\t'+full_website+'\n')
         self.blocked_websites()
 
+
     def blocked_websites(self):
         with open('C:\Windows\System32\drivers\etc\hosts','r') as hosts:
-            host = hosts.readlines() #list
+            host = hosts.readlines()
             websites = []
             counter = 0
             for i in host:
@@ -104,22 +104,21 @@ class Ui_MainWindow(object):
                     elem.setText(site_name)
                     counter += 1
 
+
     def unblock_website(self):
         global line_number
         items = self.listWidget.selectedItems()
         x=[]
         for i in list(items):
             x.append(str(i.text()))
-        website_to_unblock = x[0] #str
-        print(website_to_unblock)
-        lines = open('C:\Windows\System32\drivers\etc\hosts').read().splitlines() #list
+        website_to_unblock = x[0]
+        lines = open('C:\Windows\System32\drivers\etc\hosts').read().splitlines()
         for i in lines:
             if website_to_unblock in i:
-                line_number = lines.index(i) #1/2
+                line_number = lines.index(i)
         list_of_lines = open('C:\Windows\System32\drivers\etc\hosts','r').readlines()
         list_of_lines[line_number-1] = ''
         list_of_lines[line_number] = ''
-
         write = open('C:\Windows\System32\drivers\etc\hosts','w')
         write.writelines(list_of_lines)
         write.close()
@@ -127,8 +126,8 @@ class Ui_MainWindow(object):
         mes.setText('You have unblocked the website!')
         mes.exec()
 
+
 if __name__ == "__main__":
-    #commit test
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
