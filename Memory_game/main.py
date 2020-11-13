@@ -78,8 +78,19 @@ class Cards(pygame.sprite.Sprite):
 cards_gp = pygame.sprite.Group()
 game = Game()
 
+
+def drawtext(text, x, y, color, size):
+	myfont = pygame.font.SysFont('Comic Sans MS', size)
+	textsurface = myfont.render(text,False, color)
+	gamedisplay.blit(textsurface,(x, y))
+
+def clear_table():
+	for card in cards_gp:
+		card.kill()
+
 def gameloop():
 	game_quit = False
+	timer = True
 
 	opened_cards = []
 	y=220
@@ -94,8 +105,13 @@ def gameloop():
 			c += 1
 		y += 150
 
+	with open('game_times.txt','r') as file:
+		lowest_time = int(file.readline())
+		print(lowest_time)
+
 
 	while game_quit!=True:
+		gamedisplay.fill((0,0,0))
 		clock.tick(FPS)
 		ev = pygame.event.get()
 		for event in ev:
@@ -103,11 +119,21 @@ def gameloop():
 				if event.key==pygame.K_ESCAPE:
 					pygame.quit()
 					quit()
+				if event.key==pygame.K_a:
+					clear_table()
+
 		if len(cards_gp) == 0:
-			game.end = pygame.time.get_ticks()
-			print('You have played for ',(game.end-game.start)//1000,' seconds')
+			if timer == True:
+				game.end = pygame.time.get_ticks()
+				timer = False
+			if (game.end-game.start)//1000 < lowest_time:
+				with open('game_times.txt','w') as file:
+					file.write(str((game.end-game.start)//1000))
+			drawtext('You have played for '+str((game.end-game.start)//1000)+' seconds',(window_width/2)-440,(window_height/2)-70,(0,255,0),60)
+			drawtext('The best time is '+str(lowest_time)+' seconds',(window_width/2)-440,(window_height/2)+70,(0,255,0),60)
+			pygame.display.flip()
+			time.sleep(5)
 			exit()
-		gamedisplay.fill((0,0,0))
 		cards_gp.update(ev)
 		cards_gp.draw(gamedisplay)
 		pygame.display.flip()
