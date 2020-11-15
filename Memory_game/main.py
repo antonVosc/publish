@@ -24,6 +24,9 @@ class Game(pygame.sprite.Sprite):
 		self.first_click = False
 		self.start = 0
 		self.end = 0
+		self.last_update = 0
+		self.img_to_delete = None
+
 
 
 
@@ -39,44 +42,59 @@ class Cards(pygame.sprite.Sprite):
 		self.rect.y = y
 		self.card_image = random.choice(images)
 		images.remove(self.card_image)
+		self.size_change = 100
+		self.turn = False
+		self.iamclicked = False
 
 
 	def update(self,event):
 		mouse_x, mouse_y = pygame.mouse.get_pos()
 		for events in event:
 			if events.type == pygame.MOUSEBUTTONDOWN:
-				if (mouse_x > self.rect.x) and (mouse_x < self.rect.x+self.size[0]) and (mouse_y > self.rect.y) and (mouse_y < self.rect.y+self.size[1]):
+				if (mouse_x > self.rect.x) and (mouse_x < self.rect.x+self.size[0]) and (mouse_y > self.rect.y) and (mouse_y < self.rect.y+self.size[1]) and self.iamclicked==False:
+					game.last_update = pygame.time.get_ticks()
+					self.turn = True
+					self.iamclicked = True
+					game.opened_cards.append(self.card_image)
+
 					if game.first_click == False:
 						game.start = pygame.time.get_ticks()
 						game.first_click = True
-					if len(game.opened_cards)>2:
-						game.opened_cards = []
-					if len(game.opened_cards)<2:
-						game.opened_cards.append(self.card_image)
-						self.image = pygame.image.load(self.card_image)
-						gamedisplay.fill((0,0,0))
-						cards_gp.draw(gamedisplay)
-						pygame.display.flip()
-						time.sleep(0.5)
 
 
+		if self.turn == True:
+			if self.size_change > 1:
+				self.size_change -= 4
+				self.image = pygame.transform.scale(self.image,(int(self.size_change),100))
+			if self.size_change<1 and self.size_change>-100:
+				self.image = pygame.image.load(self.card_image)
+				self.size_change -= 4
+				self.image = pygame.transform.scale(self.image,(int(self.size_change)*-1,100))
+
+
+		self.now = pygame.time.get_ticks()
 		if len(game.opened_cards) == 2:
-			if (game.opened_cards[0] != game.opened_cards[1]):
-				for sprite in cards_gp:
-					sprite.image = pygame.Surface((100,100))
-					sprite.image.fill((0,255,0))
-				game.opened_cards = []
-			else:
-				if self.card_image == game.opened_cards[0]:
-					self.kill()
-					game.deletion_count+=1
-				if game.deletion_count==2:
+			game.img_to_delete = game.opened_cards[0]
+			if self.now - game.last_update > 1200:
+				if (game.opened_cards[0] != game.opened_cards[1]):
+					for sprite in cards_gp:
+						sprite.image = pygame.Surface((100,100))
+						sprite.image.fill((0,255,0))
+						sprite.iamclicked = False
+						sprite.turn = False
+						sprite.size_change = 100
+
 					game.opened_cards = []
-					game.deletion_count=0
+				else:
+					for sprite in cards_gp:
+						if sprite.card_image == game.img_to_delete:
+							sprite.kill()
+					game.opened_cards = []
+					game.img_to_delete = None
 
 
-cards_gp = pygame.sprite.Group()
-game = Game()
+
+
 
 
 def drawtext(text, x, y, color, size):
@@ -84,9 +102,14 @@ def drawtext(text, x, y, color, size):
 	textsurface = myfont.render(text,False, color)
 	gamedisplay.blit(textsurface,(x, y))
 
+
 def clear_table():
 	for card in cards_gp:
 		card.kill()
+
+
+cards_gp = pygame.sprite.Group()
+game = Game()
 
 def gameloop():
 	game_quit = False
@@ -107,7 +130,6 @@ def gameloop():
 
 	with open('game_times.txt','r') as file:
 		lowest_time = int(file.readline())
-		print(lowest_time)
 
 
 	while game_quit!=True:
