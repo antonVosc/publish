@@ -10,6 +10,20 @@ gamedisplay = pygame.display.set_mode((window_width,window_height))#pygame.FULLS
 pygame.display.set_caption('Memory game') #the name of the poject (appears at the top of the game window as a name of a game)
 images = ['images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png']
 
+def drawtext(text, x, y, color, size):
+	myfont = pygame.font.SysFont('Comic Sans MS', size)
+	textsurface = myfont.render(text,False, color)
+	gamedisplay.blit(textsurface,(x, y))
+
+def menu():
+	pygame.draw.rect(gamedisplay, (0,255,0), (window_width/8, (window_height/2)-75,150,150), 0)
+	pygame.draw.rect(gamedisplay, (255,255,0), ((window_width/8)+600, (window_height/2)-75, 150,150), 0)
+	pygame.draw.rect(gamedisplay, (255,0,0), ((window_width/8)+300, (window_height/2)-75, 150,150), 0)
+	drawtext('3x3', (window_width/8)+40, (window_height/2)-25, (0,0,0), 35)
+	drawtext('4x4', (window_width/8)+340, (window_height/2)-25, (0,0,0), 35)
+	drawtext('5x5', (window_width/8)+640, (window_height/2)-25, (0,0,0), 35)
+
+
 class Game(pygame.sprite.Sprite):
 	def __init__(self):
 		global images
@@ -45,6 +59,7 @@ class Cards(pygame.sprite.Sprite):
 		self.size_change = 100
 		self.turn = False
 		self.iamclicked = False
+		self.backturn = False
 
 
 	def update(self,event):
@@ -71,6 +86,18 @@ class Cards(pygame.sprite.Sprite):
 				self.size_change -= 4
 				self.image = pygame.transform.scale(self.image,(int(self.size_change)*-1,100))
 
+		if self.backturn == True:
+			if self.size_change < -4:
+				self.size_change += 4
+				self.image = pygame.transform.scale(self.image,(int(self.size_change)*-1,100))
+			if self.size_change > -5 and self.size_change<100:
+				self.size_change += 4
+				self.image=pygame.Surface((100,100))
+				self.image.fill((0,255,0))
+				self.image = pygame.transform.scale(self.image,(int(self.size_change),100))
+			if self.size_change > 96:
+				self.backturn = False
+
 
 		self.now = pygame.time.get_ticks()
 		if len(game.opened_cards) == 2:
@@ -78,12 +105,9 @@ class Cards(pygame.sprite.Sprite):
 			if self.now - game.last_update > 1200:
 				if (game.opened_cards[0] != game.opened_cards[1]):
 					for sprite in cards_gp:
-						sprite.image = pygame.Surface((100,100))
-						sprite.image.fill((0,255,0))
+						sprite.backturn = True
 						sprite.iamclicked = False
 						sprite.turn = False
-						sprite.size_change = 100
-
 					game.opened_cards = []
 				else:
 					for sprite in cards_gp:
@@ -134,6 +158,7 @@ def gameloop():
 
 	while game_quit!=True:
 		gamedisplay.fill((0,0,0))
+		menu()
 		clock.tick(FPS)
 		ev = pygame.event.get()
 		for event in ev:
