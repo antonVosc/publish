@@ -8,7 +8,10 @@ window_width=1000
 window_height=1000
 gamedisplay = pygame.display.set_mode((window_width,window_height))#pygame.FULLSCREEN #show display with the dimensions set
 pygame.display.set_caption('Memory game') #the name of the poject (appears at the top of the game window as a name of a game)
-images = ['images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png']
+
+images1 = ['images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png']
+images2 = ['images/cat1.png','images/cat2.png','images/cat1.png','images/cat2.png']
+images3 = ['images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat1.png','images/cat2.png','images/cat3.png','images/cat4.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png','images/cat5.png','images/cat6.png','images/cat7.png','images/cat8.png','images/cat9.png','images/cat10.png','images/cat11.png','images/cat12.png','images/cat9.png','images/cat10.png','images/cat11.png','images/cat12.png','images/cat13.png','images/cat14.png','images/cat15.png','images/cat16.png','images/cat13.png','images/cat14.png','images/cat15.png','images/cat16.png','images/cat17.png','images/cat18.png','images/cat17.png','images/cat18.png']
 
 def drawtext(text, x, y, color, size):
 	myfont = pygame.font.SysFont('Comic Sans MS', size)
@@ -17,16 +20,16 @@ def drawtext(text, x, y, color, size):
 
 def menu():
 	pygame.draw.rect(gamedisplay, (0,255,0), (window_width/8, (window_height/2)-75,150,150), 0)
-	pygame.draw.rect(gamedisplay, (255,255,0), ((window_width/8)+600, (window_height/2)-75, 150,150), 0)
 	pygame.draw.rect(gamedisplay, (255,0,0), ((window_width/8)+300, (window_height/2)-75, 150,150), 0)
-	drawtext('3x3', (window_width/8)+40, (window_height/2)-25, (0,0,0), 35)
+	pygame.draw.rect(gamedisplay, (255,255,0), ((window_width/8)+600, (window_height/2)-75, 150,150), 0)
+	drawtext('2x2', (window_width/8)+40, (window_height/2)-25, (0,0,0), 35)
 	drawtext('4x4', (window_width/8)+340, (window_height/2)-25, (0,0,0), 35)
-	drawtext('5x5', (window_width/8)+640, (window_height/2)-25, (0,0,0), 35)
+	drawtext('6x6', (window_width/8)+640, (window_height/2)-25, (0,0,0), 35)
 
 
 class Game(pygame.sprite.Sprite):
 	def __init__(self):
-		global images
+		global images1,images2
 		pygame.sprite.Sprite.__init__(self)
 		self.image=pygame.Surface((1,1))
 		self.image.fill((0,0,0))
@@ -45,8 +48,7 @@ class Game(pygame.sprite.Sprite):
 
 
 class Cards(pygame.sprite.Sprite):
-	def __init__(self,x,y):
-		global images
+	def __init__(self,x,y,images):
 		pygame.sprite.Sprite.__init__(self)
 		self.image=pygame.Surface((100,100))
 		self.image.fill((0,255,0))
@@ -135,30 +137,32 @@ def clear_table():
 cards_gp = pygame.sprite.Group()
 game = Game()
 
+game_quit = False
 def gameloop():
-	game_quit = False
 	timer = True
+	display_menu = True
+
+	but_size = 150
+
+	two_table_but_coords = (window_width/8,(window_height/2)-75,(window_width/8)+but_size,((window_height/2)-75)+but_size)
+	four_table_but_coords = ((window_width/8)+300, (window_height/2)-75, ((window_width/8)+300)+but_size, ((window_height/2)-75)+but_size)
+	six_table_but_coords = ((window_width/8)+600, (window_height/2)-75, ((window_width/8)+600)+but_size,((window_height/2)-75)+but_size)
+
+	two = False
+	four = False
+	six = False
 
 	opened_cards = []
-	y=220
-
-	for i in range(4):
-		x=220
-		c = 0
-		while c != 4:
-			card = Cards(x,y)
-			cards_gp.add(card)
-			x += 150
-			c += 1
-		y += 150
 
 	with open('game_times.txt','r') as file:
-		lowest_time = int(file.readline())
-
+		lowest_times = file.readlines()
+		two_table_best_time = lowest_times[0]
+		four_table_best_time = lowest_times[1]
+		six_table_best_time = lowest_times[2]
 
 	while game_quit!=True:
 		gamedisplay.fill((0,0,0))
-		menu()
+		mouse_x, mouse_y = pygame.mouse.get_pos()
 		clock.tick(FPS)
 		ev = pygame.event.get()
 		for event in ev:
@@ -169,15 +173,118 @@ def gameloop():
 				if event.key==pygame.K_a:
 					clear_table()
 
-		if len(cards_gp) == 0:
+		if display_menu == True:
+			menu()
+			mouse_x, mouse_y = pygame.mouse.get_pos()
+			if ((mouse_x > two_table_but_coords[0]) and (mouse_x < two_table_but_coords[2])) and ((mouse_y > two_table_but_coords[1]) and (mouse_y < two_table_but_coords[3])):
+				pres = pygame.mouse.get_pressed()
+				two = True
+				if pres[0]==1:
+					y=380
+
+					for i in range(2):
+						x=380
+						c = 0
+						while c != 2:
+							card = Cards(x,y,images2)
+							cards_gp.add(card)
+							x += 150
+							c += 1
+						y += 150
+
+					display_menu = False
+
+			if ((mouse_x > four_table_but_coords[0]) and (mouse_x < four_table_but_coords[2])) and ((mouse_y > four_table_but_coords[1]) and (mouse_y < four_table_but_coords[3])):
+				pres = pygame.mouse.get_pressed()
+				four = True
+				if pres[0]==1:
+					y=220
+
+					for i in range(4):
+						x=220
+						c = 0
+						while c != 4:
+							card = Cards(x,y,images1)
+							cards_gp.add(card)
+							x += 150
+							c += 1
+						y += 150
+
+					display_menu = False
+
+			if ((mouse_x > six_table_but_coords[0]) and (mouse_x < six_table_but_coords[2])) and ((mouse_y > six_table_but_coords[1]) and (mouse_y < six_table_but_coords[3])):
+				pres = pygame.mouse.get_pressed()
+				six = True
+				if pres[0]==1:
+					y=60
+
+					for i in range(6):
+						x=60
+						c = 0
+						while c != 6:
+							card = Cards(x,y,images3)
+							cards_gp.add(card)
+							x += 150
+							c += 1
+						y += 150
+
+					display_menu = False
+
+		if len(cards_gp) == 0 and display_menu == False:
 			if timer == True:
 				game.end = pygame.time.get_ticks()
 				timer = False
-			if (game.end-game.start)//1000 < lowest_time:
-				with open('game_times.txt','w') as file:
-					file.write(str((game.end-game.start)//1000))
+
+			if two == True:
+				if (game.end-game.start)//1000 < int(two_table_best_time):
+					two_table_best_time = (game.end-game.start)//1000
+					file = open('game_times.txt','r')
+					lines = file.readlines()
+					lines[0] = str(two_table_best_time)+'\n'
+					file = open('game_times.txt','w')
+					file.writelines(lines)
+					file.close()
+				else:
+					file = open('game_times.txt','r')
+					lowest_times = file.readlines()
+					two_table_best_time = lowest_times[0]
+				best_time = two_table_best_time
+				two = False
+
+			if four == True:
+				if (game.end-game.start)//1000 < int(four_table_best_time):
+					four_table_best_time = (game.end-game.start)//1000
+					file = open('game_times.txt','r')
+					lines = file.readlines()
+					lines[1] = str(four_table_best_time)+'\n'
+					file = open('game_times.txt','w')
+					file.writelines(lines)
+					file.close()
+				else:
+					file = open('game_times.txt','r')
+					lowest_times = file.readlines()
+					four_table_best_time = lowest_times[1]
+				best_time = four_table_best_time
+				four = False
+
+			if six == True:
+				if (game.end-game.start)//1000 < int(six_table_best_time):
+					six_table_best_time = (game.end-game.start)//1000
+					file = open('game_times.txt','r')
+					lines = file.readlines()
+					lines[2] = str(six_table_best_time)+'\n'
+					file = open('game_times.txt','w')
+					file.writelines(lines)
+					file.close()
+				else:
+					file = open('game_times.txt','r')
+					lowest_times = file.readlines()
+					six_table_best_time = lowest_times[2]
+				best_time = six_table_best_time
+				six = False
+
 			drawtext('You have played for '+str((game.end-game.start)//1000)+' seconds',(window_width/2)-440,(window_height/2)-70,(0,255,0),60)
-			drawtext('The best time is '+str(lowest_time)+' seconds',(window_width/2)-440,(window_height/2)+70,(0,255,0),60)
+			drawtext('The best time for this group of games is '+str(best_time)+' seconds',(window_width/2)-440,(window_height/2)+70,(0,255,0),30)
 			pygame.display.flip()
 			time.sleep(5)
 			exit()
