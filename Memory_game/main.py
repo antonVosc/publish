@@ -155,10 +155,18 @@ def gameloop():
 	opened_cards = []
 
 	with open('game_times.txt','r') as file:
-		lowest_times = file.readlines()
+		lowest_times = file.read()
+		print(lowest_times)
+		print(type(lowest_times))
+		lowest_times = lowest_times.replace("[","")
+		lowest_times = lowest_times.replace("]","")
+		lowest_times = lowest_times.split(",")
+		print(lowest_times)
+		print(type(lowest_times))
 		two_table_best_time = lowest_times[0]
 		four_table_best_time = lowest_times[1]
 		six_table_best_time = lowest_times[2]
+	#	print(lowest_times)
 
 	while game_quit!=True:
 		gamedisplay.fill((0,0,0))
@@ -166,6 +174,8 @@ def gameloop():
 		clock.tick(FPS)
 		ev = pygame.event.get()
 		for event in ev:
+			if event.type == pygame.QUIT:
+				pygame.quit()
 			if event.type==pygame.KEYDOWN:
 				if event.key==pygame.K_ESCAPE:
 					pygame.quit()
@@ -237,26 +247,17 @@ def gameloop():
 
 			if two == True:
 				if (game.end-game.start)//1000 < int(two_table_best_time):
-					two_table_best_time = (game.end-game.start)//1000
-					file = open('game_times.txt','r')
-					lines = file.readlines()
-					lines[0] = str(two_table_best_time)+'\n'
+					lowest_times[0] = (game.end-game.start)//1000
 					file = open('game_times.txt','w')
-					file.writelines(lines)
+					file.write(str(lowest_times))
 					file.close()
 				else:
-					file = open('game_times.txt','r')
-					lowest_times = file.readlines()
-					two_table_best_time = lowest_times[0]
-				best_time = two_table_best_time
+					best_time = two_table_best_time
 				two = False
-
+			'''
 			if four == True:
 				if (game.end-game.start)//1000 < int(four_table_best_time):
 					four_table_best_time = (game.end-game.start)//1000
-					file = open('game_times.txt','r')
-					lines = file.readlines()
-					lines[1] = str(four_table_best_time)+'\n'
 					file = open('game_times.txt','w')
 					file.writelines(lines)
 					file.close()
@@ -270,9 +271,7 @@ def gameloop():
 			if six == True:
 				if (game.end-game.start)//1000 < int(six_table_best_time):
 					six_table_best_time = (game.end-game.start)//1000
-					file = open('game_times.txt','r')
-					lines = file.readlines()
-					lines[2] = str(six_table_best_time)+'\n'
+
 					file = open('game_times.txt','w')
 					file.writelines(lines)
 					file.close()
@@ -282,7 +281,7 @@ def gameloop():
 					six_table_best_time = lowest_times[2]
 				best_time = six_table_best_time
 				six = False
-
+			'''
 			drawtext('You have played for '+str((game.end-game.start)//1000)+' seconds',(window_width/2)-440,(window_height/2)-70,(0,255,0),60)
 			drawtext('The best time for this group of games is '+str(best_time)+' seconds',(window_width/2)-440,(window_height/2)+70,(0,255,0),30)
 			pygame.display.flip()
