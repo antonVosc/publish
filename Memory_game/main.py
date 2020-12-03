@@ -160,10 +160,13 @@ def gameloop():
 		print(type(lowest_times))
 		lowest_times = lowest_times.replace("[","")
 		lowest_times = lowest_times.replace("]","")
+		lowest_times = lowest_times.replace("'","")
+#		lowest_times = lowest_times.replace("''","")
 		lowest_times = lowest_times.split(",")
 		print(lowest_times)
 		print(type(lowest_times))
 		two_table_best_time = lowest_times[0]
+		print(two_table_best_time)
 		four_table_best_time = lowest_times[1]
 		six_table_best_time = lowest_times[2]
 	#	print(lowest_times)
