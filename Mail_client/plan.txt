@@ -1,0 +1,8 @@
+Mail Sender
+
+GUI window
+back testing (login and send emails from server)
+
+login window
+message window
+'sent' or error message
