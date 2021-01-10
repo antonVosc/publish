@@ -1,8 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 import smtplib
 
 
-class Ui_MainWindow(object):
+class Login(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(313, 150)
@@ -74,15 +75,29 @@ class Ui_MainWindow(object):
         s.starttls()
         try:
             s.login(self.lineEdit.text(),self.lineEdit_2.text())
+            message()
         except smtplib.SMTPAuthenticationError:
-            print('Log in failed! Check your details or try again later.')
+            error = QMessageBox()
+            error.setWindowTitle('Error')
+            error.setText('Log in failed! Check your details or try again later.')
+            error.exec_()
+        except TypeError:
+            error = QMessageBox()
+            error.setWindowTitle('Error')
+            error.setText('Log in failed! Check your details or try again later.')
+            error.exec_()
+
+    def message():
+        pass
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+
+    ui = Login()
     ui.setupUi(MainWindow)
     MainWindow.show()
+
     sys.exit(app.exec_())
