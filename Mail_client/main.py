@@ -1,5 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
 import smtplib, socket
 
 class Login(object):
@@ -75,7 +78,7 @@ class Login(object):
             s = smtplib.SMTP('smtp.gmail.com',587)
             s.starttls()
             s.login(self.lineEdit.text(),self.lineEdit_2.text())
-            self.message()
+            self.show_main_email()
         except smtplib.SMTPAuthenticationError:
             error = QMessageBox()
             error.setWindowTitle('Error')
@@ -92,12 +95,12 @@ class Login(object):
             error.setText('Log in failed! Please check the internet connection and try again later.')
             error.exec_()
 
-    def message(self):
+    def show_main_email(self):
         MainWindow.hide()
         MainWindow1.show()
 
 
-class Message(object):
+class Send_Message(object):
     def setupui1(self, MainWindow1):
         MainWindow1.setObjectName("MainWindow1")
         MainWindow1.resize(812, 602)
@@ -115,6 +118,11 @@ class Message(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(690, 560, 113, 32))
         self.pushButton.setObjectName("pushButton")
+
+        self.attachButton = QtWidgets.QPushButton(self.centralwidget)
+        self.attachButton.setGeometry(QtCore.QRect(5, 560, 113, 32))
+        self.attachButton.setObjectName("attachButton")
+
         self.To = QtWidgets.QLineEdit(self.centralwidget)
         self.To.setGeometry(QtCore.QRect(40, 10, 761, 31))
         self.To.setObjectName("To")
@@ -126,8 +134,10 @@ class Message(object):
         self.Message.setPlainText("")
         self.Message.setObjectName("Message")
         MainWindow1.setCentralWidget(self.centralwidget)
+        self.message = MIMEMultipart()
 
-        self.pushButton.clicked.connect(self.message)
+        self.pushButton.clicked.connect(self.get_input)
+        self.attachButton.clicked.connect(self.attach_file)
 
         self.retranslateUi(MainWindow1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow1)
@@ -139,19 +149,24 @@ class Message(object):
         self.label_2.setText(_translate("MainWindow1", "Topic:"))
         self.label_3.setText(_translate("MainWindow1", "Message:"))
         self.pushButton.setText(_translate("MainWindow1", "Send"))
+        self.attachButton.setText(_translate("MainWindow1", "Attach file"))
 
-    def message(self):
+    def get_input(self):
         self.to_address = self.To.text()
         self.topic = self.Topic.text()
         self.mes = self.Message.document().toPlainText()
+
+        self.message["From"] = ui.lineEdit.text()
+        self.message["To"] = self.to_address
+        self.message["Subject"] = self.topic
         self.send_message()
 
     def send_message(self):
         try:
-            self.message = 'Subject: {}\n\n{}'.format(self.topic,self.mes)
+            self.body = 'Subject: {}\n\n{}'.format(self.topic,self.mes)
             if ',' in self.to_address:
                 self.to_address = self.to_address.split(',')
-            self.send = s.sendmail(ui.lineEdit.text(),self.to_address,self.message)
+            self.send = s.sendmail(ui.lineEdit.text(),self.to_address,self.body)
             sent = QMessageBox()
             sent.setWindowTitle('Message sent')
             sent.setText('The message has successfully been sent!')
@@ -164,6 +179,25 @@ class Message(object):
             error.setWindowTitle('Error')
             error.setText('Some fields were not filled. Please go back and fill every field.')
             error.exec_()
+
+    def attach_file(self):
+        self.filename = QtWidgets.QFileDialog.getOpenFileName(None, "Please Select File", "", "Image Files (*.png *.jpg *.jpeg *.bmp)")
+
+        with open(self.filename[0], "rb") as attachment:
+            # The content type "application/octet-stream" means that a MIME attachment is a binary file
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment.read())
+
+        encoders.encode_base64(part)
+
+        # Add header
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename= {self.filename}",
+        )
+
+        # Add attachment to your message and convert it to string
+        self.message.attach(part)
 
 
 if __name__ == "__main__":
@@ -178,7 +212,7 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
 
-    ui1 = Message()
+    ui1 = Send_Message()
     ui1.setupui1(MainWindow1)
     MainWindow1.hide()
 
