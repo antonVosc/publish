@@ -4,7 +4,6 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-port = 587
 login = "pythonsmtptesting911@gmail.com"
 password = "python123$"
 
@@ -21,7 +20,7 @@ message["Subject"] = subject
 body = "This is an example of email with attachment"
 message.attach(MIMEText(body, "plain"))
 
-filename = "image.png"
+filename = "/Users/admin/Downloads/IMG_9033JPG.JPG"
 # Open PDF file in binary mode
 
 # We assume that the file is in the directory where you run your Python script from

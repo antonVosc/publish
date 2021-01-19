@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QMessageBox
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 import smtplib, socket
 
 class Login(object):
@@ -135,6 +137,7 @@ class Send_Message(object):
         self.Message.setObjectName("Message")
         MainWindow1.setCentralWidget(self.centralwidget)
         self.message = MIMEMultipart()
+        self.mes = "test123"
 
         self.pushButton.clicked.connect(self.get_input)
         self.attachButton.clicked.connect(self.attach_file)
@@ -155,8 +158,7 @@ class Send_Message(object):
         self.to_address = self.To.text()
         self.topic = self.Topic.text()
         self.mes = self.Message.document().toPlainText()
-
-        self.message["From"] = ui.lineEdit.text()
+        self.message["From"] = 'anton.vosc@gmail.com'#ui.lineEdit.text()
         self.message["To"] = self.to_address
         self.message["Subject"] = self.topic
         self.send_message()
@@ -166,7 +168,26 @@ class Send_Message(object):
             self.body = 'Subject: {}\n\n{}'.format(self.topic,self.mes)
             if ',' in self.to_address:
                 self.to_address = self.to_address.split(',')
-            self.send = s.sendmail(ui.lineEdit.text(),self.to_address,self.body)
+            self.body = self.Message.document().toPlainText()
+            self.message.attach(MIMEText(self.body, "plain"))
+
+            encoders.encode_base64(self.part)
+
+            # Add header
+            #/Users/edwardgaluzo/Downloads/voucher-DC-1662644 (1).pdf
+            self.part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {self.filename}",
+            )
+
+            # Add attachment to your message and convert it to string
+            self.message.attach(self.part)
+
+
+
+
+            text = self.message.as_string()
+            self.send = s.sendmail(ui.lineEdit.text(),self.to_address,text)
             sent = QMessageBox()
             sent.setWindowTitle('Message sent')
             sent.setText('The message has successfully been sent!')
@@ -181,23 +202,14 @@ class Send_Message(object):
             error.exec_()
 
     def attach_file(self):
-        self.filename = QtWidgets.QFileDialog.getOpenFileName(None, "Please Select File", "", "Image Files (*.png *.jpg *.jpeg *.bmp)")
+        self.filename = QtWidgets.QFileDialog.getOpenFileName(None, "Select a file...", filter="All files (*)")
 
         with open(self.filename[0], "rb") as attachment:
             # The content type "application/octet-stream" means that a MIME attachment is a binary file
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
+            self.part = MIMEBase("application", "octet-stream")
+            self.part.set_payload(attachment.read())
 
-        encoders.encode_base64(part)
 
-        # Add header
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename= {self.filename}",
-        )
-
-        # Add attachment to your message and convert it to string
-        self.message.attach(part)
 
 
 if __name__ == "__main__":
