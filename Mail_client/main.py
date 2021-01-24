@@ -1,11 +1,12 @@
+import smtplib, socket
+from email import encoders
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
-from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-import smtplib, socket
+
 
 class Login(object):
     def setupUi(self, MainWindow):
@@ -14,12 +15,8 @@ class Login(object):
         MainWindow.setInputMethodHints(QtCore.Qt.ImhNone)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(280, 0, 31, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(50, 20, 41, 16))
         font = QtGui.QFont()
@@ -60,19 +57,19 @@ class Login(object):
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
         MainWindow.setCentralWidget(self.centralwidget)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.pushButton_2.clicked.connect(ui.login)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Log In"))
-        self.pushButton.setText(_translate("MainWindow", "?"))
         self.label.setText(_translate("MainWindow", "Login:"))
         self.label_2.setText(_translate("MainWindow", "Password:"))
         self.pushButton_2.setText(_translate("MainWindow", "Log In"))
+
 
     def login(self):
         try:
@@ -97,9 +94,11 @@ class Login(object):
             error.setText('Log in failed! Please check the internet connection and try again later.')
             error.exec_()
 
+
     def show_main_email(self):
         MainWindow.hide()
         MainWindow1.show()
+
 
 
 class Send_Message(object):
@@ -117,14 +116,15 @@ class Send_Message(object):
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(10, 100, 60, 16))
         self.label_3.setObjectName("label_3")
+        self.label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.label_4.setGeometry(QtCore.QRect(120, 565, 200, 16))
+        self.label_4.setObjectName("label_4")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(690, 560, 113, 32))
         self.pushButton.setObjectName("pushButton")
-
         self.attachButton = QtWidgets.QPushButton(self.centralwidget)
         self.attachButton.setGeometry(QtCore.QRect(5, 560, 113, 32))
         self.attachButton.setObjectName("attachButton")
-
         self.To = QtWidgets.QLineEdit(self.centralwidget)
         self.To.setGeometry(QtCore.QRect(40, 10, 761, 31))
         self.To.setObjectName("To")
@@ -137,13 +137,11 @@ class Send_Message(object):
         self.Message.setObjectName("Message")
         MainWindow1.setCentralWidget(self.centralwidget)
         self.message = MIMEMultipart()
-        self.mes = "test123"
-
+        self.retranslateUi(MainWindow1)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow1)
         self.pushButton.clicked.connect(self.get_input)
         self.attachButton.clicked.connect(self.attach_file)
 
-        self.retranslateUi(MainWindow1)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow1)
 
     def retranslateUi(self, MainWindow1):
         _translate = QtCore.QCoreApplication.translate
@@ -151,17 +149,20 @@ class Send_Message(object):
         self.label.setText(_translate("MainWindow1", "To:"))
         self.label_2.setText(_translate("MainWindow1", "Topic:"))
         self.label_3.setText(_translate("MainWindow1", "Message:"))
+        self.label_4.setText(_translate("MainWindow1", "No file attached"))
         self.pushButton.setText(_translate("MainWindow1", "Send"))
         self.attachButton.setText(_translate("MainWindow1", "Attach file"))
+
 
     def get_input(self):
         self.to_address = self.To.text()
         self.topic = self.Topic.text()
         self.mes = self.Message.document().toPlainText()
-        self.message["From"] = 'anton.vosc@gmail.com'#ui.lineEdit.text()
+        self.message["From"] = ui.lineEdit.text()
         self.message["To"] = self.to_address
         self.message["Subject"] = self.topic
         self.send_message()
+
 
     def send_message(self):
         try:
@@ -170,22 +171,15 @@ class Send_Message(object):
                 self.to_address = self.to_address.split(',')
             self.body = self.Message.document().toPlainText()
             self.message.attach(MIMEText(self.body, "plain"))
-
-            encoders.encode_base64(self.part)
-
-            # Add header
-            #/Users/edwardgaluzo/Downloads/voucher-DC-1662644 (1).pdf
-            self.part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {self.filename}",
-            )
-
-            # Add attachment to your message and convert it to string
-            self.message.attach(self.part)
-
-
-
-
+            try:
+                encoders.encode_base64(self.part)
+                self.part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {self.path}",
+                )
+                self.message.attach(self.part)
+            except AttributeError:
+                pass
             text = self.message.as_string()
             self.send = s.sendmail(ui.lineEdit.text(),self.to_address,text)
             sent = QMessageBox()
@@ -195,20 +189,23 @@ class Send_Message(object):
             self.To.setText('')
             self.Topic.setText('')
             self.Message.clear()
+            self.message = MIMEMultipart()
+
         except smtplib.SMTPRecipientsRefused:
             error = QMessageBox()
             error.setWindowTitle('Error')
             error.setText('Some fields were not filled. Please go back and fill every field.')
             error.exec_()
 
+
     def attach_file(self):
         self.filename = QtWidgets.QFileDialog.getOpenFileName(None, "Select a file...", filter="All files (*)")
-
         with open(self.filename[0], "rb") as attachment:
-            # The content type "application/octet-stream" means that a MIME attachment is a binary file
             self.part = MIMEBase("application", "octet-stream")
             self.part.set_payload(attachment.read())
-
+        self.path = self.filename[0].split('/')
+        self.path = self.path[-1]
+        self.label_4.setText(self.path)
 
 
 
@@ -216,7 +213,6 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     app1 = QtWidgets.QApplication(sys.argv)
-
     MainWindow = QtWidgets.QMainWindow()
     MainWindow1 = QtWidgets.QMainWindow()
 
