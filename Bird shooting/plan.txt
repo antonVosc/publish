@@ -1,0 +1,7 @@
+background
+clouds
+birds
+cannon
+bullets
+score
+lives
