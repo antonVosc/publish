@@ -77,7 +77,7 @@ class Cannon(pygame.sprite.Sprite):
     def update(self):
         if self.changed_angle == True:
             self.angle += 5 * self.dire
-            self.changed_angle = False
+             ]self.changed_angle = False
         else:
             self.image = pygame.image.load('images/cannon/cannon_00.png')
         self.old_centr = self.rect.center
