@@ -14,7 +14,7 @@ pygame.display.set_caption('Bird Shooting') #the name of the poject (appears at 
 bg = pygame.image.load('images/bg.png')
 bg = pygame.transform.scale(bg,(window_width,window_height))
 
-def score(text, x, y, color, size):
+def draw_text(text, x, y, color, size):
     myfont = pygame.font.SysFont('Comic Sans MS', size)
     textsurface = myfont.render(text, False, color)
     gameDisplay.blit(textsurface,(x, y))
@@ -36,41 +36,6 @@ class Clouds(pygame.sprite.Sprite):
         self.futureX += 0.22
         self.rect.centerx = self.futureX
         if self.rect.x > window_width:
-            self.kill()
-
-class Bird(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('images/birds/bird_1.png')
-        self.size = self.image.get_rect().size
-        self.rect = self.image.get_rect()
-        self.rect.center = (-1*self.size[0], random.randint(self.size[1]/2,(window_height/2)+(self.size[1]/2)))
-        self.counter = 1
-        self.futureX = self.rect.centerx
-        self.start_time = pygame.time.get_ticks()
-        self.direction = 1
-        self.endpoint = random.randint(100,window_width)
-        self.delta = 0.7
-
-    def update(self,ball_gp):
-        self.new_time = pygame.time.get_ticks()
-        self.futureX += self.delta
-        self.rect.centerx = self.futureX
-        if (self.new_time - self.start_time) > 50:
-            self.start_time = self.new_time
-            self.image = pygame.image.load('images/birds/bird_{}.png'.format(self.counter))
-            if self.delta<0:
-                self.image = pygame.transform.flip(self.image, True, False)
-            self.counter += 1
-        if self.rect.centerx > window_width:
-            self.kill()
-        if self.counter > 15:
-            self.counter = 1
-        if self.rect.centerx > self.endpoint:
-            self.delta = -1 * self.delta
-        death = pygame.sprite.spritecollide(self,ball_gp,True)
-        if death:
-            cannon.score += 1
             self.kill()
 
 class Cannon(pygame.sprite.Sprite):
@@ -102,6 +67,42 @@ class Cannon(pygame.sprite.Sprite):
             self.image = pygame.transform.rotate(self.image, self.angle)
             self.rect = self.image.get_rect()
             self.rect.center = self.old_centr
+
+
+class Bird(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('images/birds/bird_1.png')
+        self.size = self.image.get_rect().size
+        self.rect = self.image.get_rect()
+        self.rect.center = (-1*self.size[0], random.randint(self.size[1]/2,(window_height/2)+(self.size[1]/2)))
+        self.counter = 1
+        self.futureX = self.rect.centerx
+        self.start_time = pygame.time.get_ticks()
+        self.direction = 1
+        self.endpoint = random.randint(100,window_width)
+        self.delta = 0.7
+
+    def update(self,ball_gp):
+        self.new_time = pygame.time.get_ticks()
+        self.futureX += self.delta
+        self.rect.centerx = self.futureX
+        if (self.new_time - self.start_time) > 50:
+            self.start_time = self.new_time
+            self.image = pygame.image.load('images/birds/bird_{}.png'.format(self.counter))
+            if self.delta<0:
+                self.image = pygame.transform.flip(self.image, True, False)
+            self.counter += 1
+        if self.rect.centerx > window_width:
+            self.kill()
+        if self.counter > 15:
+            self.counter = 1
+        if self.rect.centerx > self.endpoint:
+            self.delta = -1 * self.delta
+        death = pygame.sprite.spritecollide(self,ball_gp,False)
+        if death:
+            cannon.score += 1
+            self.kill()
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self,x,y,angle):
@@ -148,7 +149,7 @@ def gameloop():
             bird = Bird()
             birds_gp.add(bird)
 
-        score('Score: '+str(cannon.score),0,window_height-200,(0,0,0),20)
+        draw_text('Score: '+str(cannon.score),0,window_height-200,(0,0,0),20)
 
         for event in pygame.event.get():
             if event.type==pygame.KEYDOWN:
