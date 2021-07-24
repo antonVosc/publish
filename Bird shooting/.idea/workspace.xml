@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f6907216-6204-4592-a364-ce8be6763dc3" name="Default Changelist" comment="" />
+    <list default="true" id="f6907216-6204-4592-a364-ce8be6763dc3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,7 +137,8 @@
       <workItem from="1626445128257" duration="772000" />
       <workItem from="1626446136679" duration="4832000" />
       <workItem from="1626706685440" duration="8487000" />
-      <workItem from="1626876708811" duration="3613000" />
+      <workItem from="1626876708811" duration="4212000" />
+      <workItem from="1627118320948" duration="1810000" />
     </task>
     <task id="LOCAL-00001" summary="bird shooting">
       <created>1626445178282</created>
@@ -157,7 +161,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626880354882</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="bird shooting">
+      <created>1626880593395</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1626880593395</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">

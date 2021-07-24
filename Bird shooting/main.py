@@ -13,6 +13,7 @@ pygame.display.set_caption('Bird Shooting') #the name of the poject (appears at 
 
 bg = pygame.image.load('images/bg.png')
 bg = pygame.transform.scale(bg,(window_width,window_height))
+cannon_anime = ['images/cannon/cannon_00.png','images/cannon/cannon_01.png','images/cannon/cannon_02.png','images/cannon/cannon_03.png','images/cannon/cannon_04.png','images/cannon/cannon_05.png','images/cannon/cannon_06.png','images/cannon/cannon_07.png','images/cannon/cannon_08.png','images/cannon/cannon_09.png','images/cannon/cannon_010.png']
 
 def draw_text(text, x, y, color, size):
     myfont = pygame.font.SysFont('Comic Sans MS', size)
@@ -41,18 +42,36 @@ class Clouds(pygame.sprite.Sprite):
 class Cannon(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('images/cannon/cannon_00.png')
+        self.image = pygame.image.load(cannon_anime[0])
         self.size = self.image.get_rect().size
         self.rect = self.image.get_rect()
         self.rect.x = window_width - self.size[0] + 70
         self.rect.y = window_height - self.size[1] - 175
+        self.frame = 0
+        self.last_updated = pygame.time.get_ticks()
+        self.anim_fps = 60
         self.angle = 5
         self.changed_angle = False
         self.dire = 1
         self.score = 0
+        self.shoot = False
 
     def update(self):
-        if self.changed_angle == True:
+        now = pygame.time.get_ticks()
+        if self.shoot == True:
+            self.last_updated = now
+            self.frame += 1
+            if self.frame == len(cannon_anime):
+                self.frame = 0
+                self.shoot = False
+            else:
+                center = self.rect.center
+                self.image = pygame.image.load(cannon_anime[self.frame])
+                self.image = pygame.transform.rotate(self.image, self.angle)
+                self.rect = self.image.get_rect()
+                self.rect.center = center
+
+        elif self.changed_angle == True:
             if self.angle>=5 and self.angle<=25:
                 self.angle += 5 * self.dire
                 self.changed_angle = False
@@ -168,6 +187,7 @@ def gameloop():
             if event.type==pygame.KEYUP:
                 if event.key==pygame.K_SPACE:
                     finish = pygame.time.get_ticks()
+                    cannon.shoot = True
                     ball = Ball(cannon.rect.x+(cannon.size[0]/2),cannon.rect.y+(cannon.size[1]/2),cannon.angle)
                     ball_gp.add(ball)
                     ball.y_power = (finish - start)//50
