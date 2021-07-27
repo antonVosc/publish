@@ -230,6 +230,7 @@ def gameloop():
                     if bullets_left < 0:
                         draw_text('Game over!',(window_width/2)-100,(window_height/2)-100,(0,0,0),50)
                         cannon.shoot = False
+
         cloud_gp.update()
         birds_gp.update(ball_gp)
         cannon_gp.update()
