@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f6907216-6204-4592-a364-ce8be6763dc3" name="Default Changelist" comment="">
+    <list default="true" id="f6907216-6204-4592-a364-ce8be6763dc3" name="Default Changelist" comment="bird shooting">
+      <change afterPath="$PROJECT_DIR$/../.idea/publish.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/images.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Bird shooting.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Bird shooting.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Bird shooting.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Heavy Cannon Fire Sound Effect.mp3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/bin/python" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,18 +103,21 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Bird shooting" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.9" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -114,9 +130,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="star_wars" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Bird shooting" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../space_wars" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../space_wars/star_wars.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.star_wars" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
@@ -140,7 +179,14 @@
       <workItem from="1626876708811" duration="4212000" />
       <workItem from="1627118320948" duration="3643000" />
       <workItem from="1627210465090" duration="7636000" />
-      <workItem from="1627394828066" duration="565000" />
+      <workItem from="1627394828066" duration="3264000" />
+      <workItem from="1627398112891" duration="5000" />
+      <workItem from="1627398122623" duration="3404000" />
+      <workItem from="1627651900137" duration="4562000" />
+      <workItem from="1627656270062" duration="440000" />
+      <workItem from="1627657227123" duration="36000" />
+      <workItem from="1627657309829" duration="52000" />
+      <workItem from="1627657408111" duration="1610000" />
     </task>
     <task id="LOCAL-00001" summary="bird shooting">
       <created>1626445178282</created>
@@ -184,7 +230,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627218173155</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="bird shooting">
+      <created>1627395510117</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1627395510117</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -244,11 +297,18 @@
           <line>165</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../space_wars/star_wars.py</url>
+          <line>111</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Bird_shooting$main.coverage" NAME="main Coverage Results" MODIFIED="1626879080065" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Bird_shooting$star_wars.coverage" NAME="star_wars Coverage Results" MODIFIED="1627652469705" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../space_wars" />
+    <SUITE FILE_PATH="coverage/main_py$star_wars.coverage" NAME="star_wars Coverage Results" MODIFIED="1627658705900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../space_wars" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/images/cloud/cloud_2.png">
