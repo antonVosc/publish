@@ -215,7 +215,7 @@ def gameloop():
 
         draw_text('Score: '+str(cannon.score),0,window_height-150,(0,0,0),50)
         draw_text('Bullets left: '+str(cannon.bullets_left),window_width-375,window_height-150,(0,0,0),50)
-
+    #test
         for event in pygame.event.get():
             if event.type==pygame.KEYDOWN:
                 if event.type == pygame.QUIT:
