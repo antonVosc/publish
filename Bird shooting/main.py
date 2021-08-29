@@ -130,9 +130,6 @@ class Bird(pygame.sprite.Sprite):
             cannon.bullets_left += random.randint(1,3)
             self.kill()
 
-        coll = pygame.sprite.spritecollide(self,birds_gp,False)
-        if coll:
-            self.kill()
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self,x,y,angle):
@@ -217,7 +214,7 @@ def gameloop():
             birds_gp.add(bird)
 
         draw_text('Score: '+str(cannon.score),0,window_height-150,(0,0,0),50)
-        draw_text('Bullets left: '+str(cannon.bullets_left),window_width-275,window_height-150,(0,0,0),50)
+        draw_text('Bullets left: '+str(cannon.bullets_left),window_width-375,window_height-150,(0,0,0),50)
 
         for event in pygame.event.get():
             if event.type==pygame.KEYDOWN:
