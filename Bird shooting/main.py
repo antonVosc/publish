@@ -1,23 +1,25 @@
-import pygame,random,time
+import pygame,random
 
 pygame.init()
 FPS = 60
 
 clock = pygame.time.Clock()
-window_width=1200 #getting my screen width from line 3
-window_height=800 #getting my screen height from line
-gameDisplay = pygame.display.set_mode((window_width,window_height))#pygame.FULLSCREEN #show display with the dimensions set
-pygame.display.set_caption('Bird Shooting') #the name of the poject (appears at the top of the game window as a name of a game)
+window_width=1200
+window_height=800
+gameDisplay = pygame.display.set_mode((window_width,window_height))
+pygame.display.set_caption('Bird Shooting')
 
 bg = pygame.image.load('images/bg.png')
 bg = pygame.transform.scale(bg,(window_width,window_height))
-cannon_anime = ['images/cannon/cannon_00.png','images/cannon/cannon_01.png','images/cannon/cannon_02.png','images/cannon/cannon_03.png','images/cannon/cannon_04.png','images/cannon/cannon_05.png','images/cannon/cannon_06.png','images/cannon/cannon_07.png','images/cannon/cannon_08.png','images/cannon/cannon_09.png','images/cannon/cannon_010.png']
+cannon_anime = ['images/cannon/cannon_00.png','images/cannon/cannon_01.png','images/cannon/cannon_02.png','images/cannon/cannon_03.png','images/cannon/cannon_04.png','images/cannon/cannon_05.png','images/cannon/cannon_06.png','images/cannon/cannon_07.png',
+                'images/cannon/cannon_08.png','images/cannon/cannon_09.png','images/cannon/cannon_010.png']
 
 
 def draw_text(text, x, y, color, size):
     myfont = pygame.font.SysFont('Comic Sans MS', size)
     textsurface = myfont.render(text, False, color)
     gameDisplay.blit(textsurface,(x, y))
+
 
 class Clouds(pygame.sprite.Sprite):
     def __init__(self):
@@ -32,11 +34,14 @@ class Clouds(pygame.sprite.Sprite):
         self.rect.y = random.randint(0,(window_height/2)+100)
         self.futureX = self.rect.centerx
 
+
     def update(self):
         self.futureX += 0.22
         self.rect.centerx = self.futureX
         if self.rect.x > window_width:
             self.kill()
+
+
 
 class Cannon(pygame.sprite.Sprite):
     def __init__(self):
@@ -55,23 +60,23 @@ class Cannon(pygame.sprite.Sprite):
         self.score = 0
         self.shoot = False
         self.bullets_left = 10
+        self.bird_ycoords = []
+
 
     def update(self):
         last_updated = pygame.time.get_ticks()
         if self.shoot == True:
             self.last_updated = last_updated
             self.frame += 1
-            if self.last_updated-last_updated > 2000:
-                if self.frame == len(cannon_anime):
-                    self.shoot = False
-                    self.frame = 0
-                else:
-                    center = self.rect.center
-                    self.image = pygame.image.load(cannon_anime[self.frame])
-                    self.image = pygame.transform.rotate(self.image, self.angle)
-                    self.rect = self.image.get_rect()
-                    self.rect.center = center
-
+            if self.frame == len(cannon_anime):
+                self.shoot = False
+                self.frame = 0
+            else:
+                center = self.rect.center
+                self.image = pygame.image.load(cannon_anime[self.frame])
+                self.image = pygame.transform.rotate(self.image, self.angle)
+                self.rect = self.image.get_rect()
+                self.rect.center = center
         elif self.changed_angle == True:
             if self.angle>=5 and self.angle<=25:
                 self.angle += 5 * self.dire
@@ -89,6 +94,7 @@ class Cannon(pygame.sprite.Sprite):
             self.rect.center = self.old_centr
 
 
+
 class Bird(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -98,17 +104,18 @@ class Bird(pygame.sprite.Sprite):
         self.rect.center = (-1*self.size[0], random.randint(self.size[1]/2,(window_height/2)+(self.size[1]/2)))
         self.counter = 1
         self.futureX = self.rect.centerx
-        self.space_pressed_time = pygame.time.get_ticks()
+        self.fly = pygame.time.get_ticks()
         self.direction = 1
         self.endpoint = random.randint(100,window_width)
         self.delta = 3
+
 
     def update(self,ball_gp):
         self.new_time = pygame.time.get_ticks()
         self.futureX += self.delta
         self.rect.centerx = self.futureX
-        if (self.new_time - self.space_pressed_time) > 50:
-            self.space_pressed_time = self.new_time
+        if (self.new_time - self.fly) > 50:
+            self.fly = self.new_time
             self.image = pygame.image.load('images/birds/bird_{}.png'.format(self.counter))
             if self.delta<0:
                 self.image = pygame.transform.flip(self.image, True, False)
@@ -131,6 +138,7 @@ class Bird(pygame.sprite.Sprite):
             self.kill()
 
 
+
 class Ball(pygame.sprite.Sprite):
     def __init__(self,x,y,angle):
         pygame.sprite.Sprite.__init__(self)
@@ -145,6 +153,7 @@ class Ball(pygame.sprite.Sprite):
         self.y_power = 0
         self.angle = angle
 
+
     def update(self):
         self.y_power -= 1
         self.rect.y -= self.y_power
@@ -153,6 +162,8 @@ class Ball(pygame.sprite.Sprite):
             self.kill()
         if self.angle < 0:
             self.x_power = self.angle
+
+
 
 class Shoot(pygame.sprite.Sprite):
     def __init__(self,x,y,dimesions):
@@ -169,6 +180,7 @@ class Shoot(pygame.sprite.Sprite):
         self.last_updated = pygame.time.get_ticks()
         self.anim_fps = 60
 
+
     def update(self):
         last_updated = pygame.time.get_ticks()
         if last_updated - self.last_updated > self.anim_fps:
@@ -184,44 +196,40 @@ class Shoot(pygame.sprite.Sprite):
         self.rect.x = self.rect.x - 10
         self.rect.y = self.rect.y - 5
 
+
+
 cannon = Cannon()
 explosion_gp = pygame.sprite.Group()
 birds_gp = pygame.sprite.Group()
 
 def gameloop():
-    last_pressed = 0  
+    last_pressed = 0
     cloud_gp = pygame.sprite.Group()
     cannon_gp = pygame.sprite.Group()
-
     ball_gp = pygame.sprite.Group()
-
     cannon_gp.add(cannon)
-
     end = False
 
     while True:
         clock.tick(60)
         gameDisplay.blit(bg,(0,0))
         timer = random.randint(0, 1250)
-        last_updated = pygame.time.get_ticks()
 
         if timer < 2:
             cloud = Clouds()
             cloud_gp.add(cloud)
-
-        if timer > 3 and timer < 50 and end == False:
+        if timer > 3 and timer < 20 and end == False:
             bird = Bird()
             birds_gp.add(bird)
 
         draw_text('Score: '+str(cannon.score),0,window_height-150,(0,0,0),50)
         draw_text('Bullets left: '+str(cannon.bullets_left),window_width-375,window_height-150,(0,0,0),50)
-    #test
+
         for event in pygame.event.get():
             if event.type==pygame.KEYDOWN:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-
                 if event.key==pygame.K_ESCAPE:
                     pygame.quit()
                     quit()
@@ -272,6 +280,7 @@ def gameloop():
         explosion_gp.draw(gameDisplay)
 
         pygame.display.flip()
+
 
 gameloop()
 pygame.quit()
