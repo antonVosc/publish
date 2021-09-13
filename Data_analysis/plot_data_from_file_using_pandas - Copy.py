@@ -48,8 +48,8 @@ second_line = {'x':second_x_values,
 
 df = pd.DataFrame({'x_value':x_values,'y_value':y_values})
 plt.plot('x_value','y_value',data=df,marker='',color='black',linewidth=2)
-
-df = pd.DataFrame({'x_value':second_x_values,'y_value':second_y_values})
-plt.plot('x_value','y_value',data=df,marker='',color='red',linewidth=2)
+plt.plot(df['y_value'].rolling(365).mean())
+#df = pd.DataFrame({'x_value':second_x_values,'y_value':second_y_values})
+#plt.plot('x_value','y_value',data=df,marker='',color='red',linewidth=2)
 
 plt.show()
