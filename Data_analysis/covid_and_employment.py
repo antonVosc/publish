@@ -40,6 +40,7 @@ plt.plot('x_value','y_value',data=df,marker='',color='black',linewidth=2)
 plt.show()
 
 '''
+
 date = []
 close_values = []
 average_of_last_365_days = []
