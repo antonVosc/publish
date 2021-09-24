@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f6907216-6204-4592-a364-ce8be6763dc3" name="Default Changelist" comment="bird shooting">
-      <change afterPath="$PROJECT_DIR$/../.idea/publish.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/images.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../space_wars/images/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Bird shooting.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Bird shooting.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Bird shooting.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="f6907216-6204-4592-a364-ce8be6763dc3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Sounds/shoot.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sounds/splat.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_01.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_02.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_03.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_04.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_05.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_06.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_07.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_08.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/Heavy Cannon Fire Sound Effect.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/python" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +182,8 @@
       <workItem from="1627656270062" duration="440000" />
       <workItem from="1627657227123" duration="36000" />
       <workItem from="1627657309829" duration="52000" />
-      <workItem from="1627657408111" duration="1610000" />
+      <workItem from="1627657408111" duration="1974000" />
+      <workItem from="1630076852566" duration="145000" />
     </task>
     <task id="LOCAL-00001" summary="bird shooting">
       <created>1626445178282</created>
@@ -237,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627395510117</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="bird shooting">
+      <created>1627659338681</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1627659338681</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
