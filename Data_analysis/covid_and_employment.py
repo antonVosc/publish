@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import pandas as pd
 import csv
 from datetime import datetime
 date = []
@@ -23,72 +22,31 @@ with open('unemployment_data.csv') as csv_file:
         months.append(row[0])
         unemployed_perc.append(float(row[1]))
 
-print(months)
-print(unemployed_perc)
-
-
 x_values = [datetime.strptime(d,'%d/%m/%Y').strftime('%m/%d/%Y') for d in date]
 y_values = cases
 
-data = {'x':x_values,
-        'y':y_values
-        }
 
-df = pd.DataFrame({'x_value':x_values,'y_value':y_values})
-plt.plot('x_value','y_value',data=df,marker='',color='black',linewidth=2)
+second_x_values = months
+second_y_values = unemployed_perc
 
-plt.show()
+fig = plt.figure()
+ax=fig.add_subplot(111, label="1")
+ax2=fig.add_subplot(111, label="2", frame_on=False)
 
-'''
+ax.plot(x_values, y_values, color="black")
+ax.set_xlabel("Date", color="black")
+ax.set_ylabel("New cases", color="black")
+ax.tick_params(axis='x', colors="black")
+ax.tick_params(axis='y', colors="black")
 
-date = []
-close_values = []
-average_of_last_365_days = []
-start = 0
-end = 366
-av = 0
-second_x_values = []
-
-with open('BTC-USD.csv') as csv_file:
-    reader = csv.reader(csv_file)
-    for row in reader:
-        if 'Date' in row or 'null' in row:
-            pass
-        else:
-            date.append(row[0])
-            close_values.append(float(row[4]))
-
-
-while end != len(close_values)-1:
-    av = 0
-    for i in range(start,end):
-        av += close_values[i]
-    average_of_last_365_days.append(av/365)
-    start += 1
-    end += 1
-
-
-x_values = [datetime.strptime(d,'%d/%m/%Y').strftime('%m/%d/%Y') for d in date]
-y_values = close_values
-
-del date[:367]
-second_x_values=[datetime.strptime(d,'%d/%m/%Y').strftime('%m/%d/%Y') for d in date]
-second_y_values=average_of_last_365_days
-
-
-data = {'x':x_values,
-        'y':y_values
-        }
-
-second_line = {'x':second_x_values,
-               'y':second_y_values}
-
-
-df = pd.DataFrame({'x_value':x_values,'y_value':y_values})
-plt.plot('x_value','y_value',data=df,marker='',color='black',linewidth=2)
-
-df = pd.DataFrame({'x_value':second_x_values,'y_value':second_y_values})
-plt.plot('x_value','y_value',data=df,marker='',color='red',linewidth=2)
+ax2.plot(second_x_values, second_y_values, color="red")
+ax2.xaxis.tick_top()
+ax2.yaxis.tick_right()
+ax2.set_xlabel('Months', color="red")
+ax2.set_ylabel('Unemployed percentage', color="red")
+ax2.xaxis.set_label_position('top')
+ax2.yaxis.set_label_position('right')
+ax2.tick_params(axis='x', colors="red")
+ax2.tick_params(axis='y', colors="red")
 
 plt.show()
-'''
