@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import csv
 from datetime import datetime
+import matplotlib.dates as mdates
 import matplotlib.dates as dates
 
 
@@ -38,21 +39,11 @@ ax=fig.add_subplot(111, label="1")
 ax2=fig.add_subplot(111, label="2", frame_on=False)
 
 ax.plot(x_values, y_values, color="black")
-ax.set_xlabel("Date", color="black")
-ax.set_ylabel("New cases", color="black")
-ax.tick_params(axis='x', colors="black")
-ax.tick_params(axis='y', colors="black")
-ax.xaxis.tick_top()
 
 ax2.plot(second_x_values, second_y_values, color="red")
 ax2.xaxis.tick_top()
 ax2.yaxis.tick_right()
-ax2.set_xlabel('Months', color="red")
-ax2.set_ylabel('Unemployed percentage', color="red")
-ax2.xaxis.set_label_position('top')
-ax2.yaxis.set_label_position('right')
-ax2.tick_params(axis='x', colors="red")
-ax2.tick_params(axis='y', colors="red")
+
 
 years = dates.MonthLocator()
 ax.xaxis.set_major_locator(years)

@@ -42,7 +42,7 @@ print(len(new_dates),len(close_values))
 x_values = [datetime.strptime(d,"%m/%d/%y").date() for d in new_dates]
 ax = plt.gca()
 formatter = mdates.DateFormatter("%m-%d-%y")
-locator = mdates.MonthLocator()
+locator = mdates.YearLocator()
 ax.xaxis.set_major_locator(locator)
 y_values = close_values
 
