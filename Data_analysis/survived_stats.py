@@ -16,7 +16,6 @@ with open('Titanic_R.csv') as csv_file:
             survived_men.append(row[3])
             graph.append(int(row[14]))
 
-
 plt.gca().set_ylim([0,500])
 
 plt.hist(graph,bins=3)
