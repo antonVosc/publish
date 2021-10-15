@@ -1,11 +1,13 @@
 import csv
-import pandas as pd
 import matplotlib.pyplot as plt
 
 quality = []
 alco = []
-graph = []
-
+x_values = []
+y_values = []
+x1_values = []
+y1_values = []
+counter = 0
 
 with open('winequality_white.csv') as csv_file:
     reader = csv.reader(csv_file,delimiter=',')
@@ -13,13 +15,42 @@ with open('winequality_white.csv') as csv_file:
         if 'chlorides' in row:
             pass
         else:
-            alco.append(int(float(row[9])))
-            quality.append(int(float(row[10])))
+            alco.append(float(row[9]))
+            quality.append(float(row[10]))
 
-data = {'x':alco,
-        'y':quality}
+for i in range(len(alco)-1):
+    if (i % 200) == 0:
+        x_values.append(counter)
+        y_values.append(alco[i])
+    counter += i
 
-df = pd.DataFrame({'x_value':alco,'y_value':quality})
-plt.plot('x_value','y_value',data=df,marker='',color='red',linewidth=2)
+counter = 0
+for i in range(len(quality)-1):
+    if (i % 200) == 0:
+        x1_values.append(counter)
+        y1_values.append(quality[i])
+    counter += i
+
+
+data = {'x':x_values,
+        'y':y_values}
+data2 = {'x':x1_values,
+         'y':y1_values}
+
+
+fig = plt.figure()
+ax=fig.add_subplot(111, label="1")
+ax2=fig.add_subplot(111, label="2", frame_on=False)
+
+ax.plot(x_values, y_values, color="black")
+ax.tick_params(axis='x', colors="black")
+ax.tick_params(axis='y', colors="black")
+ax.xaxis.tick_top()
+
+
+ax2.plot(x1_values, y1_values, color="red")
+ax2.tick_params(axis='x', colors="red")
+ax2.tick_params(axis='y', colors="red")
+ax2.yaxis.tick_right()
 
 plt.show()
