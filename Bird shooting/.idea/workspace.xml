@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f6907216-6204-4592-a364-ce8be6763dc3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Sounds/shoot.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sounds/splat.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shoot/bird_explosion_08.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Sound_recognition/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Sound_recognition/rec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/publish.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/publish.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,10 +37,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="121" />
-    <option name="y" value="85" />
+    <option name="x" value="85" />
+    <option name="y" value="62" />
     <option name="width" value="1440" />
-    <option name="height" value="837" />
+    <option name="height" value="838" />
   </component>
   <component name="ProjectId" id="1uqjoSNmXFhuCim5y7CUWmdD28T" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -57,7 +51,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -92,6 +85,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -111,6 +105,9 @@
       <module name="Bird shooting" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="/usr/local/bin/python3.9" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -184,6 +181,7 @@
       <workItem from="1627657309829" duration="52000" />
       <workItem from="1627657408111" duration="1974000" />
       <workItem from="1630076852566" duration="145000" />
+      <workItem from="1637081180572" duration="13000" />
     </task>
     <task id="LOCAL-00001" summary="bird shooting">
       <created>1626445178282</created>
@@ -245,8 +243,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="121" y="85" width="1440" height="837" extended-state="0" />
-    <editor active="true" />
+    <frame x="85" y="62" width="1440" height="838" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16560958" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
